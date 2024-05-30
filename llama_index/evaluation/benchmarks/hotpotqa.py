@@ -10,9 +10,9 @@ from llama_index.schema import NodeWithScore, TextNode
 from llama_index.indices.base_retriever import BaseRetriever
 import os
 import tqdm
-import requests
 import json
 from collections import Counter
+from security import safe_requests
 
 DEV_DISTRACTOR_URL = """http://curtis.ml.cmu.edu/datasets/\
 hotpot/hotpot_dev_distractor_v1.json"""
@@ -36,7 +36,7 @@ class HotpotQAEvaluator:
                 save_file = open(
                     os.path.join(dataset_full_path, "dev_distractor.json"), "wb"
                 )
-                response = requests.get(url, stream=True)
+                response = safe_requests.get(url, stream=True)
 
                 # Define the size of each chunk
                 chunk_size = 1024

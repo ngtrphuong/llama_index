@@ -14,10 +14,10 @@ from pathlib import Path
 from typing import List, Optional, Tuple, Type
 
 import pkg_resources
-import requests
 from pkg_resources import DistributionNotFound
 
 from llama_index.readers.base import BaseReader
+from security import safe_requests
 
 LLAMA_HUB_CONTENTS_URL = "https://raw.githubusercontent.com/emptycrown/llama-hub/main"
 LOADER_HUB_PATH = "/llama_hub"
@@ -26,7 +26,7 @@ LOADER_HUB_URL = LLAMA_HUB_CONTENTS_URL + LOADER_HUB_PATH
 
 def _get_file_content(loader_hub_url: str, path: str) -> Tuple[str, int]:
     """Get the content of a file from the GitHub REST API."""
-    resp = requests.get(loader_hub_url + path)
+    resp = safe_requests.get(loader_hub_url + path)
     return resp.text, resp.status_code
 
 

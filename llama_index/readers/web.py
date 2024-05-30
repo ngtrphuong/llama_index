@@ -1,11 +1,11 @@
 """Web scraper."""
 import logging
-import requests
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from llama_index.bridge.pydantic import PrivateAttr
 from llama_index.readers.base import BasePydanticReader
 from llama_index.schema import Document
+from security import safe_requests
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +35,7 @@ class SimpleWebPageReader(BasePydanticReader):
     ) -> None:
         """Initialize with parameters."""
         try:
-            import html2text  # noqa: F401
+            pass
         except ImportError:
             raise ImportError(
                 "`html2text` package not found, please run `pip install html2text`"
@@ -62,7 +62,7 @@ class SimpleWebPageReader(BasePydanticReader):
             raise ValueError("urls must be a list of strings.")
         documents = []
         for url in urls:
-            response = requests.get(url, headers=None).text
+            response = safe_requests.get(url, headers=None).text
             if self.html_to_text:
                 import html2text
 
@@ -96,7 +96,7 @@ class TrafilaturaWebReader(BasePydanticReader):
         """
 
         try:
-            import trafilatura  # noqa: F401
+            pass
         except ImportError:
             raise ImportError(
                 "`trafilatura` package not found, please run `pip install trafilatura`"
@@ -176,10 +176,7 @@ class BeautifulSoupWebReader(BasePydanticReader):
     ) -> None:
         """Initialize with parameters."""
         try:
-            from urllib.parse import urlparse  # noqa: F401
-
-            import requests  # noqa: F401
-            from bs4 import BeautifulSoup  # noqa: F401
+            pass
         except ImportError:
             raise ImportError(
                 "`bs4`, `requests`, and `urllib` must be installed to scrape websites."
@@ -209,14 +206,12 @@ class BeautifulSoupWebReader(BasePydanticReader):
 
         """
         from urllib.parse import urlparse
-
-        import requests
         from bs4 import BeautifulSoup
 
         documents = []
         for url in urls:
             try:
-                page = requests.get(url)
+                page = safe_requests.get(url)
             except Exception:
                 raise ValueError(f"One of the inputs is not a valid url: {url}")
 
@@ -256,7 +251,7 @@ class RssReader(BasePydanticReader):
 
         """
         try:
-            import feedparser  # noqa: F401
+            pass
         except ImportError:
             raise ImportError(
                 "`feedparser` package not found, please run `pip install feedparser`"
@@ -264,7 +259,7 @@ class RssReader(BasePydanticReader):
 
         if html_to_text:
             try:
-                import html2text  # noqa: F401
+                pass
             except ImportError:
                 raise ImportError(
                     "`html2text` package not found, please run `pip install html2text`"
