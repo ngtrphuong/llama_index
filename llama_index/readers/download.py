@@ -26,7 +26,7 @@ LOADER_HUB_URL = LLAMA_HUB_CONTENTS_URL + LOADER_HUB_PATH
 
 def _get_file_content(loader_hub_url: str, path: str) -> Tuple[str, int]:
     """Get the content of a file from the GitHub REST API."""
-    resp = requests.get(loader_hub_url + path)
+    resp = requests.get(loader_hub_url + path, timeout=60)
     return resp.text, resp.status_code
 
 
